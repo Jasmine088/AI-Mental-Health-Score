@@ -1,12 +1,16 @@
+from pathlib import Path
+
 import joblib
-from fastapi import FastAPI 
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
 import pandas as pd
 from pydantic import BaseModel, Field 
 from typing import Literal
 from fastapi.middleware.cors import CORSMiddleware
 
 
-model = joblib.load('Mental_Health_Model.pkl')
+PROJECT_DIR = Path(__file__).resolve().parent
+model = joblib.load(PROJECT_DIR / 'Mental_Health_Model.pkl')
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -18,7 +22,17 @@ class PredictionResponse(BaseModel):
    predicted_mental_health_score:float
 @app.get('/')
 def greet():
-    return "welcome"
+    return FileResponse(PROJECT_DIR / 'index.html')
+
+
+@app.get('/style.css')
+def stylesheet():
+    return FileResponse(PROJECT_DIR / 'style.css', media_type='text/css')
+
+
+@app.get('/script.js')
+def javascript():
+    return FileResponse(PROJECT_DIR / 'script.js', media_type='application/javascript')
 
 
 top_countries = ['Other','India','USA','Canada','Australia','UK','Germany','Mexico','Turkey','France']
