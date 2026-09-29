@@ -2,7 +2,7 @@
   "use strict";
 
   // The frontend and API are served by the same FastAPI app.
-  const API_BASE = "";
+  const API_BASE = "https://ai-mental-health-score-prediction.onrender.com";
 
   const form = document.getElementById("predict-form");
   const submitBtn = document.getElementById("submit-btn");
